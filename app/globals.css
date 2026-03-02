@@ -76,3 +76,18 @@ body {
 .animate-pulse-dot {
   animation: pulse-dot 1.5s ease-in-out infinite;
 }
+
+/* Chat mockup highlights */
+.chat-highlight-green {
+  background: rgba(34, 197, 94, 0.08);
+  color: #16a34a;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.chat-highlight-red {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+  padding: 1px 4px;
+  border-radius: 3px;
+}

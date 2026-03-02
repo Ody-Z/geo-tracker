@@ -1,150 +1,258 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  Radar,
-  Search,
-  BarChart3,
-  Bell,
-  ArrowRight,
-  Sparkles,
-  Globe,
-  TrendingUp,
-} from "lucide-react";
+import { ChatMockup } from "@/components/landing/ChatMockup";
+import { FAQ } from "@/components/landing/FAQ";
 
 export default function HomePage() {
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5" />
-        <div className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border bg-background px-4 py-1.5 text-sm font-medium">
-              <Sparkles className="h-4 w-4 text-primary" />
-              GEO — Generative Engine Optimization
+      {/* ── Hero ── */}
+      <section className="bg-card border-b">
+        <div className="mx-auto max-w-6xl px-4 pt-12 sm:pt-16 sm:px-6">
+          {/* Top */}
+          <div className="mx-auto max-w-[720px] text-center pb-14">
+            <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border bg-background px-3.5 py-1.5 text-[13px] font-medium text-muted-foreground">
+              <span className="w-1.5 h-1.5 rounded-full bg-score-high animate-pulse-dot" />
+              AI Visibility Intelligence
             </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-              Is your brand visible to{" "}
-              <span className="text-primary">AI?</span>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-bold tracking-tight leading-[1.08] mb-4">
+              Understand how AI
+              <br />
+              sees you.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Find out how ChatGPT, Claude, Perplexity, and Gemini talk about
-              your brand. Run a free scan in seconds — no signup required.
+
+            <p className="text-lg text-muted-foreground leading-relaxed max-w-[540px] mx-auto mb-7">
+              Track how ChatGPT, Claude, Gemini, and Perplexity represent you
+              &mdash; and what to fix next. For professionals, founders, and
+              personal brands.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-4">
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/scan">
-                <Button size="lg" className="gap-2">
-                  <Search className="h-4 w-4" />
-                  Run Free Scan
+                <Button size="lg" className="w-full sm:w-auto px-7">
+                  Check if AI knows you
                 </Button>
               </Link>
-              <Link href="/pricing">
-                <Button variant="outline" size="lg" className="gap-2">
-                  View Pricing
-                  <ArrowRight className="h-4 w-4" />
+              <a href="#solution">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto px-7"
+                >
+                  How it works
                 </Button>
-              </Link>
+              </a>
             </div>
+          </div>
+
+          {/* Visual: feature cards + chat mockup */}
+          <div className="grid md:grid-cols-[.4fr_.6fr] gap-0 max-w-[960px] mx-auto overflow-hidden">
+            {/* Feature cards */}
+            <div className="flex md:flex-col overflow-x-auto md:overflow-visible md:pr-5 pb-5 md:pb-0 gap-0">
+              {[
+                {
+                  title: "Visibility",
+                  text: "See the share of chats where your brand is mentioned and understand how often you show up in conversations.",
+                  active: true,
+                },
+                {
+                  title: "Position",
+                  text: "Understand your brand\u2019s position within AI search results and uncover opportunities to improve your ranking.",
+                  active: false,
+                },
+                {
+                  title: "Sentiment",
+                  text: "Find out how your brand is perceived by AI, what\u2019s going well, and what requires improvements.",
+                  active: false,
+                },
+              ].map((card) => (
+                <div
+                  key={card.title}
+                  className={`flex-1 min-w-[220px] py-7 px-6 border-b-[3px] md:border-b-0 md:border-l-[3px] flex flex-col justify-center transition-colors ${
+                    card.active
+                      ? "border-foreground"
+                      : "border-border hover:border-muted-foreground"
+                  }`}
+                >
+                  <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {card.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Chat mockup */}
+            <ChatMockup />
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
-            How it works
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Three steps to understand your AI visibility
-          </p>
-        </div>
-        <div className="mt-16 grid gap-8 sm:grid-cols-3">
-          {[
-            {
-              icon: Search,
-              title: "1. Enter your brand",
-              description:
-                "Tell us your brand name, website, and the queries your customers ask AI.",
-            },
-            {
-              icon: Globe,
-              title: "2. We scan 4 AI models",
-              description:
-                "We query ChatGPT, Claude, Perplexity, and Gemini simultaneously and analyze their responses.",
-            },
-            {
-              icon: BarChart3,
-              title: "3. Get your score",
-              description:
-                "See your visibility score (0-100), sentiment analysis, citations, and ranking position.",
-            },
-          ].map((step) => (
-            <div
-              key={step.title}
-              className="relative rounded-xl border bg-card p-8 text-center"
-            >
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                <step.icon className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-semibold">{step.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="border-t bg-muted/30">
+      {/* ── Problem ── */}
+      <section className="bg-card">
         <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight">
-              Everything you need to track AI visibility
+          <div className="max-w-[640px] mb-12">
+            <p className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              The Real Problem
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-3">
+              You don&apos;t need another vanity dashboard.
             </h2>
+            <p className="text-muted-foreground">
+              You need three clear decision outcomes.
+            </p>
           </div>
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+          <div className="grid sm:grid-cols-3 gap-4">
             {[
               {
-                icon: Radar,
-                title: "Multi-model coverage",
-                desc: "Scan ChatGPT, Claude, Perplexity, and Gemini in one click.",
+                num: "01",
+                text: "Know exactly where AI cites you — and where you\u2019re invisible.",
               },
               {
-                icon: TrendingUp,
-                title: "Trend tracking",
-                desc: "Weekly automated scans show how your visibility changes over time.",
+                num: "02",
+                text: "See the competitor authority gap: who AI ranks above you and why.",
               },
               {
-                icon: Bell,
-                title: "Score drop alerts",
-                desc: "Get notified by email when your visibility score drops significantly.",
+                num: "03",
+                text: "Get weekly priority actions tied to your specific gaps.",
               },
-              {
-                icon: BarChart3,
-                title: "Detailed analytics",
-                desc: "Per-model breakdown, sentiment analysis, citation tracking, and rank position.",
-              },
-              {
-                icon: Globe,
-                title: "Shareable reports",
-                desc: "Every scan generates a unique URL you can share with your team.",
-              },
-              {
-                icon: Sparkles,
-                title: "Actionable insights",
-                desc: "Understand exactly how each AI model perceives and recommends your brand.",
-              },
-            ].map((feature) => (
+            ].map((item) => (
               <div
-                key={feature.title}
-                className="rounded-xl border bg-card p-6"
+                key={item.num}
+                className="rounded-2xl border bg-background p-7 hover:shadow-md transition-shadow"
               >
-                <feature.icon className="h-5 w-5 text-primary" />
-                <h3 className="mt-3 font-semibold">{feature.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {feature.desc}
+                <span className="text-xs font-bold text-muted-foreground tracking-wide mb-3 block">
+                  {item.num}
+                </span>
+                <p className="text-[15px] text-muted-foreground leading-relaxed">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 border-l-[3px] border-foreground rounded-r-xl bg-background px-6 py-5 text-sm text-muted-foreground">
+            Most professionals are stuck with manual prompting, random
+            screenshots, and no consistent measurement.
+          </div>
+        </div>
+      </section>
+
+      {/* ── Solution (How It Works) ── */}
+      <section id="solution" className="bg-background">
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+          <div className="max-w-[640px] mb-12">
+            <p className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              How It Works
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">
+              AI Visibility OS for professionals, founders, and personal brands.
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            {[
+              {
+                tag: "Track",
+                accent: false,
+                items: [
+                  "Mention trend by model (ChatGPT / Claude / Gemini / Perplexity)",
+                  "Prompt-level visibility for your core topics",
+                  "Competitor share-of-voice movement",
+                ],
+              },
+              {
+                tag: "Diagnose",
+                accent: true,
+                items: [
+                  "Citation/source breakdown (where AI pulls from)",
+                  "Missing-entity and coverage gaps",
+                  "Volatility and confidence flags",
+                ],
+              },
+              {
+                tag: "Act",
+                accent: false,
+                items: [
+                  "Weekly action plan tied to your gaps",
+                  "Priority tasks ranked by expected impact",
+                  "Change log to see what moved results",
+                ],
+              },
+            ].map((pillar) => (
+              <div
+                key={pillar.tag}
+                className={`rounded-2xl border bg-card p-7 hover:shadow-md transition-shadow ${
+                  pillar.accent ? "border-foreground shadow-sm" : ""
+                }`}
+              >
+                <span
+                  className={`text-xs font-bold uppercase tracking-wider mb-4 block ${
+                    pillar.accent
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {pillar.tag}
+                </span>
+                <ul className="list-disc pl-4 space-y-2.5">
+                  {pillar.items.map((item) => (
+                    <li
+                      key={item}
+                      className="text-sm text-muted-foreground leading-relaxed"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Differentiators ── */}
+      <section className="bg-card">
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+          <div className="max-w-[640px] mb-12">
+            <p className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              Why AIknowsMe
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">
+              What makes this different.
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            {[
+              {
+                num: "1",
+                title: "No fake guarantees",
+                text: 'We don\u2019t promise "#1 in ChatGPT." We provide transparent measurement and practical actions.',
+              },
+              {
+                num: "2",
+                title: "Built for decisions, not screenshots",
+                text: 'Every report ends with: "Do these 3 things next."',
+              },
+              {
+                num: "3",
+                title: "Revenue-aware workflow",
+                text: "Track visibility and compare with traffic and conversion shifts over time.",
+              },
+            ].map((diff) => (
+              <div
+                key={diff.num}
+                className="rounded-2xl border bg-background p-7 hover:shadow-md transition-shadow"
+              >
+                <span className="inline-flex w-7 h-7 items-center justify-center rounded-lg text-[13px] font-bold bg-foreground text-background mb-3.5">
+                  {diff.num}
+                </span>
+                <h3 className="text-base font-semibold mb-2">{diff.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {diff.text}
                 </p>
               </div>
             ))}
@@ -152,23 +260,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="border-t">
-        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Ready to check your AI visibility?
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            No signup required. Results in under 30 seconds.
+      {/* ── ICP ── */}
+      <section className="bg-background">
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+          <p className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground mb-12">
+            Who This Is For
           </p>
-          <div className="mt-8">
-            <Link href="/scan">
-              <Button size="lg" className="gap-2">
-                <Search className="h-4 w-4" />
-                Start Free Scan
-              </Button>
-            </Link>
+
+          <div className="grid md:grid-cols-[1.2fr_.8fr] gap-5 items-start">
+            <ul className="space-y-3">
+              {[
+                "High-stakes professionals: lawyers, doctors, financial advisors, and other YMYL fields where AI citations drive referrals",
+                "Founders building personal or company authority in their category",
+                "Personal brand builders: speakers, coaches, educators, and experts who need to be cited — not just ranked",
+              ].map((item) => (
+                <li
+                  key={item}
+                  className="text-[15px] text-muted-foreground leading-relaxed pl-5 relative before:content-[''] before:absolute before:left-0 before:top-[9px] before:w-1.5 before:h-1.5 before:rounded-full before:bg-foreground"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div className="border border-dashed rounded-2xl p-6 h-full">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 block">
+                Not ideal for
+              </span>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Anyone looking for a magic-ranking button or guaranteed AI
+                mentions.
+              </p>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section id="faq" className="bg-card">
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+          <div className="max-w-[640px] mb-12">
+            <p className="text-[13px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              FAQ
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">
+              Common questions.
+            </h2>
+          </div>
+
+          <FAQ />
+        </div>
+      </section>
+
+      {/* ── Final CTA ── */}
+      <section className="bg-foreground text-background">
+        <div className="mx-auto max-w-[600px] px-4 py-20 sm:py-24 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">
+            See where AI answers cite you &mdash; and exactly what to do next.
+          </h2>
+          <Link href="/scan">
+            <Button
+              size="lg"
+              className="bg-background text-foreground hover:bg-background/90 px-7"
+            >
+              Check if AI knows you
+            </Button>
+          </Link>
+          <p className="mt-3.5 text-sm text-background/50">
+            No credit card required &middot; Results in under 30 seconds
+          </p>
         </div>
       </section>
     </div>

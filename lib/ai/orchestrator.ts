@@ -119,7 +119,7 @@ export async function runScan(scanId: string): Promise<void> {
             query.id,
             query.promptText,
             brand.name,
-            brand.domain,
+            null,
             modelKey
           )
         );

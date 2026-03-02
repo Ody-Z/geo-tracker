@@ -17,7 +17,6 @@ import { Plus, Loader2, Radar } from "lucide-react";
 interface Brand {
   id: string;
   name: string;
-  domain: string | null;
   scans: {
     id: string;
     overallScore: number | null;
@@ -249,7 +248,6 @@ export default function DashboardPage() {
               key={brand.id}
               id={brand.id}
               name={brand.name}
-              domain={brand.domain}
               scans={brand.scans}
             />
           ))}

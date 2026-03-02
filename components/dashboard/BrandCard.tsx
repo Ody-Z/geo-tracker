@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { formatDate, scoreColor } from "@/lib/utils";
 
 interface Scan {
@@ -21,11 +21,10 @@ interface Scan {
 interface BrandCardProps {
   id: string;
   name: string;
-  domain: string | null;
   scans: Scan[];
 }
 
-export function BrandCard({ id, name, domain, scans }: BrandCardProps) {
+export function BrandCard({ id, name, scans }: BrandCardProps) {
   const completedScans = scans.filter((s) => s.status === "completed" && s.overallScore !== null);
   const latestScore = completedScans[0]?.overallScore ?? null;
   const prevScore = completedScans[1]?.overallScore ?? null;
@@ -47,12 +46,6 @@ export function BrandCard({ id, name, domain, scans }: BrandCardProps) {
               </span>
             )}
           </div>
-          {domain && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Globe className="h-3 w-3" />
-              {domain}
-            </div>
-          )}
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">

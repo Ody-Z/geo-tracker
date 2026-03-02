@@ -42,7 +42,6 @@ export async function GET(
       completedAt: scan.completedAt,
       brand: {
         name: scan.brand.name,
-        domain: scan.brand.domain,
       },
       results: scan.results.map((r) => ({
         id: r.id,

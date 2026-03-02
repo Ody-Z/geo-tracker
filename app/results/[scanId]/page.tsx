@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { ResultsHero } from "@/components/results/ResultsHero";
 import { ModelResultCard } from "@/components/results/ModelResultCard";
 import { UpgradeCTA } from "@/components/results/UpgradeCTA";
 import { ScanProgress } from "@/components/scan/ScanProgress";
-import { MODEL_KEYS, type ModelKey } from "@/lib/ai/models";
+import { LeadCaptureGate } from "@/components/results/LeadCaptureGate";
+import { MODEL_KEYS } from "@/lib/ai/models";
 
 interface ScanData {
   id: string;
@@ -39,6 +40,16 @@ export default function ResultsPage() {
   const { scanId } = useParams<{ scanId: string }>();
   const [scan, setScan] = useState<ScanData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
+
+  // Check localStorage on mount
+  useEffect(() => {
+    if (scanId) {
+      setUnlocked(
+        localStorage.getItem(`aiknowsme_unlocked_${scanId}`) === "true"
+      );
+    }
+  }, [scanId]);
 
   useEffect(() => {
     if (!scanId) return;
@@ -69,6 +80,10 @@ export default function ResultsPage() {
 
     return () => clearInterval(intervalId);
   }, [scanId]);
+
+  const handleUnlocked = useCallback(() => {
+    setUnlocked(true);
+  }, []);
 
   if (error) {
     return (
@@ -104,6 +119,17 @@ export default function ResultsPage() {
     );
   }
 
+  // Scan completed — show gate if not unlocked
+  if (!unlocked) {
+    return (
+      <LeadCaptureGate
+        scanId={scanId}
+        brandName={scan.brand.name}
+        onUnlocked={handleUnlocked}
+      />
+    );
+  }
+
   // Group results by model
   const resultsByModel: Record<string, ScanData["results"]> = {};
   for (const result of scan.results) {
@@ -116,7 +142,8 @@ export default function ResultsPage() {
   // Model mentions map
   const modelMentions: Record<string, boolean> = {};
   for (const key of MODEL_KEYS) {
-    modelMentions[key] = resultsByModel[key]?.some((r) => r.brandMentioned) || false;
+    modelMentions[key] =
+      resultsByModel[key]?.some((r) => r.brandMentioned) || false;
   }
 
   return (

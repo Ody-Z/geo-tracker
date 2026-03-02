@@ -13,10 +13,10 @@ export function ScanProgress() {
         <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
           <Radar className="h-8 w-8 text-primary animate-spin" />
         </div>
-        <h2 className="text-xl font-semibold">Scanning AI Models...</h2>
+        <h2 className="text-xl font-semibold">Checking if AI knows you...</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Querying {MODEL_LIST.length} AI models with your prompts. This
-          usually takes 10-20 seconds.
+          Querying {MODEL_LIST.length} AI models to see if you show up. This
+          usually takes 15-30 seconds.
         </p>
 
         <div className="mt-8 flex items-center justify-center gap-3">

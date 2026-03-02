@@ -12,7 +12,6 @@ import {
 import { relations } from "drizzle-orm";
 
 // Enums
-export const planEnum = pgEnum("plan", ["free", "pro"]);
 export const scanStatusEnum = pgEnum("scan_status", [
   "pending",
   "running",
@@ -33,28 +32,10 @@ export const sentimentEnum = pgEnum("sentiment", [
 ]);
 
 // Tables
-export const profiles = pgTable("profiles", {
-  id: uuid("id").primaryKey(), // matches auth.users.id
-  email: text("email").notNull(),
-  plan: planEnum("plan").notNull().default("free"),
-  stripeCustomerId: text("stripe_customer_id"),
-  stripeSubscriptionId: text("stripe_subscription_id"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-});
-
 export const brands = pgTable("brands", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").references(() => profiles.id, {
-    onDelete: "cascade",
-  }),
   name: text("name").notNull(),
-  domain: text("domain"),
-  isAnonymous: boolean("is_anonymous").notNull().default(false),
+  background: text("background"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
@@ -108,15 +89,7 @@ export const scanResults = pgTable("scan_results", {
 });
 
 // Relations
-export const profilesRelations = relations(profiles, ({ many }) => ({
-  brands: many(brands),
-}));
-
-export const brandsRelations = relations(brands, ({ one, many }) => ({
-  profile: one(profiles, {
-    fields: [brands.userId],
-    references: [profiles.id],
-  }),
+export const brandsRelations = relations(brands, ({ many }) => ({
   queries: many(queries),
   scans: many(scans),
 }));
@@ -149,7 +122,6 @@ export const scanResultsRelations = relations(scanResults, ({ one }) => ({
 }));
 
 // Types
-export type Profile = typeof profiles.$inferSelect;
 export type Brand = typeof brands.$inferSelect;
 export type Query = typeof queries.$inferSelect;
 export type Scan = typeof scans.$inferSelect;

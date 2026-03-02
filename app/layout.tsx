@@ -4,13 +4,13 @@ import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GEO Tracker — AI Visibility Dashboard",
+  title: "AIknowsMe — Understand How AI Sees You",
   description:
-    "Track how your brand appears in AI-generated responses from ChatGPT, Claude, Perplexity, and Gemini. Free scan available.",
+    "Track how ChatGPT, Claude, Gemini, and Perplexity represent you — and what to fix next. For professionals, founders, and personal brands.",
   openGraph: {
-    title: "GEO Tracker — AI Visibility Dashboard",
+    title: "AIknowsMe — Understand How AI Sees You",
     description:
-      "Track how your brand appears in AI-generated responses from ChatGPT, Claude, Perplexity, and Gemini.",
+      "Track how ChatGPT, Claude, Gemini, and Perplexity represent you — and what to fix next.",
     type: "website",
   },
 };

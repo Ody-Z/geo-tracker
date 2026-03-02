@@ -3,6 +3,7 @@ import { after } from "next/server";
 import { db } from "@/lib/db";
 import { brands, queries, scans } from "@/lib/db/schema";
 import { scanFormSchema } from "@/components/scan/scan-schema";
+import { generateQueries } from "@/lib/ai/query-generator";
 import { runScan } from "@/lib/ai/orchestrator";
 import { freeScanLimiter } from "@/lib/ratelimit";
 
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest) {
     const ip = request.headers.get("x-forwarded-for") || "127.0.0.1";
 
     try {
-      const { success, remaining } = await freeScanLimiter.limit(ip);
+      const { success } = await freeScanLimiter.limit(ip);
       if (!success) {
         return NextResponse.json(
           {
@@ -37,15 +38,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { brandName, domain, queries: queryTexts } = parsed.data;
+    const { name, background } = parsed.data;
 
-    // Create brand (anonymous for free scans)
+    // Generate queries from background
+    const queryTexts = await generateQueries(name, background);
+
+    // Create brand
     const [brand] = await db
       .insert(brands)
       .values({
-        name: brandName,
-        domain,
-        isAnonymous: true,
+        name,
+        background,
       })
       .returning();
 

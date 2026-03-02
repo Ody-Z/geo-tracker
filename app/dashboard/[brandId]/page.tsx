@@ -10,7 +10,7 @@ import { VisibilityScoreGauge } from "@/components/results/VisibilityScoreGauge"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, ArrowLeft, Play, Globe, Trash2 } from "lucide-react";
+import { Loader2, ArrowLeft, Play, Trash2 } from "lucide-react";
 import { formatDate, scoreColor } from "@/lib/utils";
 import { MODEL_KEYS, type ModelKey } from "@/lib/ai/models";
 
@@ -35,7 +35,6 @@ interface Scan {
 interface BrandData {
   id: string;
   name: string;
-  domain: string | null;
   queries: { promptText: string }[];
   scans: Scan[];
 }
@@ -161,12 +160,6 @@ export default function BrandDetailPage() {
           </Button>
           <div>
             <h1 className="text-2xl font-bold">{brand.name}</h1>
-            {brand.domain && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Globe className="h-3 w-3" />
-                {brand.domain}
-              </div>
-            )}
           </div>
         </div>
         <div className="flex gap-2">

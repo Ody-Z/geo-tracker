@@ -2,9 +2,9 @@ import { ScanForm } from "@/components/scan/ScanForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free AI Visibility Scan — GEO Tracker",
+  title: "Check Your AI Visibility | AIknowsMe",
   description:
-    "Check how ChatGPT, Claude, Perplexity, and Gemini talk about your brand. Free, no signup required.",
+    "Find out how ChatGPT, Claude, Gemini, and Perplexity represent you.",
 };
 
 export default function ScanPage() {
