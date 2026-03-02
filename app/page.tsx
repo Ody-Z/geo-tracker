@@ -1,16 +1,15 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ChatMockup } from "@/components/landing/ChatMockup";
+import { HeroScanForm } from "@/components/landing/HeroScanForm";
+import { ScrollToTopButton } from "@/components/landing/ScrollToTopButton";
 import { FAQ } from "@/components/landing/FAQ";
 
 export default function HomePage() {
   return (
     <div>
-      {/* ── Hero ── */}
-      <section className="bg-card border-b">
-        <div className="mx-auto max-w-6xl px-4 pt-12 sm:pt-16 sm:px-6">
-          {/* Top */}
-          <div className="mx-auto max-w-[720px] text-center pb-14">
+      {/* ── Hero (full viewport) ── */}
+      <section className="bg-card min-h-[calc(100vh-64px)] flex items-center border-b">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full">
+          <div className="mx-auto max-w-[720px] text-center">
             <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border bg-background px-3.5 py-1.5 text-[13px] font-medium text-muted-foreground">
               <span className="w-1.5 h-1.5 rounded-full bg-score-high animate-pulse-dot" />
               AI Visibility Intelligence
@@ -22,31 +21,20 @@ export default function HomePage() {
               sees you.
             </h1>
 
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-[540px] mx-auto mb-7">
+            <p className="text-lg text-muted-foreground leading-relaxed max-w-[540px] mx-auto mb-8">
               Track how ChatGPT, Claude, Gemini, and Perplexity represent you
               &mdash; and what to fix next. For professionals, founders, and
               personal brands.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/scan">
-                <Button size="lg" className="w-full sm:w-auto px-7">
-                  Check if AI knows you
-                </Button>
-              </Link>
-              <a href="#solution">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto px-7"
-                >
-                  How it works
-                </Button>
-              </a>
-            </div>
+            <HeroScanForm />
           </div>
+        </div>
+      </section>
 
-          {/* Visual: feature cards + chat mockup */}
+      {/* ── Visual: feature cards + chat mockup ── */}
+      <section className="bg-card">
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
           <div className="grid md:grid-cols-[.4fr_.6fr] gap-0 max-w-[960px] mx-auto overflow-hidden">
             {/* Feature cards */}
             <div className="flex md:flex-col overflow-x-auto md:overflow-visible md:pr-5 pb-5 md:pb-0 gap-0">
@@ -108,7 +96,7 @@ export default function HomePage() {
             {[
               {
                 num: "01",
-                text: "Know exactly where AI cites you — and where you\u2019re invisible.",
+                text: "Know exactly where AI cites you \u2014 and where you\u2019re invisible.",
               },
               {
                 num: "02",
@@ -272,7 +260,7 @@ export default function HomePage() {
               {[
                 "High-stakes professionals: lawyers, doctors, financial advisors, and other YMYL fields where AI citations drive referrals",
                 "Founders building personal or company authority in their category",
-                "Personal brand builders: speakers, coaches, educators, and experts who need to be cited — not just ranked",
+                "Personal brand builders: speakers, coaches, educators, and experts who need to be cited \u2014 not just ranked",
               ].map((item) => (
                 <li
                   key={item}
@@ -318,14 +306,7 @@ export default function HomePage() {
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">
             See where AI answers cite you &mdash; and exactly what to do next.
           </h2>
-          <Link href="/scan">
-            <Button
-              size="lg"
-              className="bg-background text-foreground hover:bg-background/90 px-7"
-            >
-              Check if AI knows you
-            </Button>
-          </Link>
+          <ScrollToTopButton />
           <p className="mt-3.5 text-sm text-background/50">
             No credit card required &middot; Results in under 30 seconds
           </p>

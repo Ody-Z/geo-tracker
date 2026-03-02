@@ -9,6 +9,7 @@ export async function queryOpenAI(prompt: string): Promise<string> {
     messages: [{ role: "user", content: prompt }],
     max_tokens: 2048,
     temperature: 0.7,
+    web_search_options: {},
   });
 
   return response.choices[0]?.message?.content || "";

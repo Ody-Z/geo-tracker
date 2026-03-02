@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   return (
@@ -11,7 +10,7 @@ export function Navbar() {
           AIknowsMe
         </Link>
 
-        <nav className="hidden sm:flex items-center gap-6">
+        <nav className="flex items-center gap-6">
           <a
             href="/#solution"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -24,16 +23,7 @@ export function Navbar() {
           >
             FAQ
           </a>
-          <Link href="/scan">
-            <Button size="sm">Check Now</Button>
-          </Link>
         </nav>
-
-        <div className="sm:hidden">
-          <Link href="/scan">
-            <Button size="sm">Check Now</Button>
-          </Link>
-        </div>
       </div>
     </header>
   );

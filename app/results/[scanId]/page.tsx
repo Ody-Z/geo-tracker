@@ -8,33 +8,7 @@ import { UpgradeCTA } from "@/components/results/UpgradeCTA";
 import { ScanProgress } from "@/components/scan/ScanProgress";
 import { LeadCaptureGate } from "@/components/results/LeadCaptureGate";
 import { MODEL_KEYS } from "@/lib/ai/models";
-
-interface ScanData {
-  id: string;
-  status: "pending" | "running" | "completed" | "failed";
-  overallScore: number | null;
-  createdAt: string;
-  completedAt: string | null;
-  brand: {
-    name: string;
-    domain: string | null;
-  };
-  results: {
-    id: string;
-    model: string;
-    query: string;
-    queryId: string;
-    responseText: string | null;
-    brandMentioned: boolean;
-    domainMentioned: boolean;
-    mentionCount: number;
-    mentionPositions: number[];
-    citations: { url: string; brandRelated: boolean }[];
-    sentiment: string;
-    visibilityScore: number;
-    rankPosition: number | null;
-  }[];
-}
+import type { ScanData } from "@/lib/types/scan";
 
 export default function ResultsPage() {
   const { scanId } = useParams<{ scanId: string }>();
@@ -153,6 +127,7 @@ export default function ResultsPage() {
         brandName={scan.brand.name}
         createdAt={scan.createdAt}
         modelMentions={modelMentions}
+        scanId={scan.id}
       />
 
       {/* Model results grid */}

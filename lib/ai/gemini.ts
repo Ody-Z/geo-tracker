@@ -6,7 +6,10 @@ const genAI = new GoogleGenerativeAI(
 );
 
 export async function queryGemini(prompt: string): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: AI_MODELS.gemini.id });
+  const model = genAI.getGenerativeModel({
+    model: AI_MODELS.gemini.id,
+    tools: [{ googleSearchRetrieval: {} }],
+  });
   const result = await model.generateContent(prompt);
   return result.response.text();
 }

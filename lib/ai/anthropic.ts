@@ -7,9 +7,12 @@ export async function queryAnthropic(prompt: string): Promise<string> {
   const response = await client.messages.create({
     model: AI_MODELS.anthropic.id,
     max_tokens: 2048,
+    tools: [{ type: "web_search_20250305", name: "web_search" }],
     messages: [{ role: "user", content: prompt }],
   });
 
-  const block = response.content[0];
-  return block.type === "text" ? block.text : "";
+  return response.content
+    .filter((block): block is Anthropic.TextBlock => block.type === "text")
+    .map((block) => block.text)
+    .join("\n");
 }

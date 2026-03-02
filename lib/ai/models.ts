@@ -1,6 +1,6 @@
 export const AI_MODELS = {
   openai: {
-    id: "gpt-4o-mini",
+    id: "gpt-5-mini",
     name: "ChatGPT",
     weight: 1.0,
     color: "#10B981",
@@ -18,7 +18,7 @@ export const AI_MODELS = {
     color: "#6366F1",
   },
   gemini: {
-    id: "gemini-2.0-flash-lite",
+    id: "gemini-3.0-flash",
     name: "Gemini",
     weight: 1.0,
     color: "#3B82F6",

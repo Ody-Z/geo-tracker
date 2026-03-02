@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ResponseExcerpt } from "./ResponseExcerpt";
+import { QueryResponseList } from "./QueryResponseList";
 import { CitationsList } from "./CitationsList";
 import { AI_MODELS, type ModelKey } from "@/lib/ai/models";
 import { CheckCircle, XCircle, Hash, TrendingUp } from "lucide-react";
@@ -61,8 +61,6 @@ export function ModelResultCard({
     .filter((r): r is number => r !== null)
     .sort((a, b) => a - b)[0];
 
-  // Use the first result's response as the primary excerpt
-  const primaryResult = results[0];
   const dominantSentiment = results.reduce(
     (acc, r) => {
       if (r.sentiment === "positive") acc.positive++;
@@ -145,13 +143,8 @@ export function ModelResultCard({
           </Badge>
         </div>
 
-        {/* Response excerpt */}
-        {primaryResult?.responseText && (
-          <ResponseExcerpt
-            text={primaryResult.responseText}
-            brandName={brandName}
-          />
-        )}
+        {/* Query + Response pairs */}
+        <QueryResponseList results={results} brandName={brandName} />
 
         {/* Citations */}
         {allCitations.length > 0 && (

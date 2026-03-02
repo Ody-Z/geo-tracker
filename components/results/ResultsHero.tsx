@@ -13,6 +13,8 @@ interface ResultsHeroProps {
   brandName: string;
   createdAt: string;
   modelMentions: Record<string, boolean>;
+  scanId?: string;
+  isSharedView?: boolean;
 }
 
 export function ResultsHero({
@@ -20,11 +22,16 @@ export function ResultsHero({
   brandName,
   createdAt,
   modelMentions,
+  scanId,
+  isSharedView = false,
 }: ResultsHeroProps) {
   const [copied, setCopied] = useState(false);
 
   function handleShare() {
-    navigator.clipboard.writeText(window.location.href);
+    const shareUrl = scanId
+      ? `${window.location.origin}/share/${scanId}`
+      : window.location.href;
+    navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
@@ -67,14 +74,16 @@ export function ResultsHero({
 
       {/* Meta */}
       <div className="mt-6 flex items-center justify-center gap-4">
-        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+        <span className="flex items-center gap-1 text-xs text-muted-foreground" suppressHydrationWarning>
           <Clock className="h-3 w-3" />
           {formatDateTime(createdAt)}
         </span>
-        <Button variant="outline" size="sm" onClick={handleShare} className="gap-1">
-          <Share2 className="h-3 w-3" />
-          {copied ? "Copied!" : "Share"}
-        </Button>
+        {!isSharedView && (
+          <Button variant="outline" size="sm" onClick={handleShare} className="gap-1">
+            <Share2 className="h-3 w-3" />
+            {copied ? "Copied!" : "Share"}
+          </Button>
+        )}
       </div>
     </div>
   );
