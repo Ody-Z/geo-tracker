@@ -2,6 +2,43 @@ import OpenAI from "openai";
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+export function parseQueryGeneratorContent(content: string): string[] {
+  const jsonSource = content.startsWith("[") || content.startsWith("{") ? content : `{${content}}`;
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(jsonSource);
+  } catch {
+    const arrayMatch = content.match(/\[[\s\S]*\]/);
+    parsed = arrayMatch ? JSON.parse(arrayMatch[0]) : {};
+  }
+
+  let raw: unknown[] = [];
+  if (Array.isArray(parsed)) {
+    raw = parsed;
+  } else if (parsed && typeof parsed === "object") {
+    if ("queries" in parsed && Array.isArray((parsed as { queries: unknown[] }).queries)) {
+      raw = (parsed as { queries: unknown[] }).queries;
+    } else if ("items" in parsed && Array.isArray((parsed as { items: unknown[] }).items)) {
+      raw = (parsed as { items: unknown[] }).items;
+    } else {
+      const arr = Object.values(parsed).find((v) => Array.isArray(v));
+      if (Array.isArray(arr)) {
+        raw = arr;
+      } else if (Object.values(parsed).every((v) => typeof v === "string")) {
+        raw = Object.values(parsed);
+      } else {
+        raw = [];
+      }
+    }
+  }
+
+  const queries = raw.filter((q): q is string => typeof q === "string").slice(0, 5);
+  if (queries.length >= 3) return queries;
+
+  console.warn("[query-generator] invalid format. parsed keys:", parsed && typeof parsed === "object" ? Object.keys(parsed) : "n/a", "raw length:", raw.length, "content sample:", content.slice(0, 500));
+  throw new Error("Invalid response format from query generator");
+}
+
 export async function generateQueries(
   name: string,
   background: string
@@ -31,36 +68,33 @@ Rules:
       response_format: { type: "json_object" },
     });
 
-    let content = response.choices[0]?.message?.content?.trim() || "{}";
+    const msg = response.choices[0]?.message;
+    const rawContent = msg?.content as string | { text: string }[] | undefined;
+    let content: string;
+    if (typeof rawContent === "string") {
+      content = rawContent.trim();
+    } else if (Array.isArray(rawContent)) {
+      content = rawContent
+        .map((p) => (p && typeof p === "object" && "text" in p ? String(p.text ?? "") : ""))
+        .join("\n")
+        .trim();
+    } else {
+      content = "{}";
+    }
+    if (!content) content = "{}";
+
+    console.log("[query-generator] raw content length:", content.length, "preview:", content.slice(0, 300));
+
     const codeBlock = content.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (codeBlock) content = codeBlock[1].trim();
-    const parsed = JSON.parse(content.startsWith("[") ? content : content || "{}") as unknown;
-
-    let queries: unknown[] = [];
-    if (Array.isArray(parsed)) {
-      queries = parsed;
-    } else if (parsed && typeof parsed === "object") {
-      if ("queries" in parsed && Array.isArray((parsed as { queries: unknown[] }).queries)) {
-        queries = (parsed as { queries: unknown[] }).queries;
-      } else if ("items" in parsed && Array.isArray((parsed as { items: unknown[] }).items)) {
-        queries = (parsed as { items: unknown[] }).items;
-      } else {
-        const arr = Object.values(parsed).find((v) => Array.isArray(v));
-        queries = Array.isArray(arr) ? arr : [];
-      }
-    }
-
-    const valid = Array.isArray(queries) && queries.length >= 3 && queries.every((q) => typeof q === "string");
-    if (valid) return (queries as string[]).slice(0, 5);
-
-    throw new Error("Invalid response format from query generator");
+    return parseQueryGeneratorContent(content);
   } catch (error) {
     console.error("Query generation failed, using fallback:", error);
     return generateFallbackQueries(background);
   }
 }
 
-function generateFallbackQueries(background: string): string[] {
+export function generateFallbackQueries(background: string): string[] {
   const words = background.toLowerCase().split(/\s+/);
 
   // Extract potential role/specialty keywords
