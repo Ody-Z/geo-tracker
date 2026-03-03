@@ -31,21 +31,27 @@ Rules:
       response_format: { type: "json_object" },
     });
 
-    const content = response.choices[0]?.message?.content || "{}";
-    const parsed = JSON.parse(content);
+    let content = response.choices[0]?.message?.content?.trim() || "{}";
+    const codeBlock = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (codeBlock) content = codeBlock[1].trim();
+    const parsed = JSON.parse(content.startsWith("[") ? content : content || "{}") as unknown;
 
-    // Handle both { queries: [...] } and direct array
-    const queries: unknown[] = Array.isArray(parsed)
-      ? parsed
-      : parsed.queries || parsed.items || Object.values(parsed)[0];
-
-    if (
-      Array.isArray(queries) &&
-      queries.length >= 3 &&
-      queries.every((q) => typeof q === "string")
-    ) {
-      return (queries as string[]).slice(0, 5);
+    let queries: unknown[] = [];
+    if (Array.isArray(parsed)) {
+      queries = parsed;
+    } else if (parsed && typeof parsed === "object") {
+      if ("queries" in parsed && Array.isArray((parsed as { queries: unknown[] }).queries)) {
+        queries = (parsed as { queries: unknown[] }).queries;
+      } else if ("items" in parsed && Array.isArray((parsed as { items: unknown[] }).items)) {
+        queries = (parsed as { items: unknown[] }).items;
+      } else {
+        const arr = Object.values(parsed).find((v) => Array.isArray(v));
+        queries = Array.isArray(arr) ? arr : [];
+      }
     }
+
+    const valid = Array.isArray(queries) && queries.length >= 3 && queries.every((q) => typeof q === "string");
+    if (valid) return (queries as string[]).slice(0, 5);
 
     throw new Error("Invalid response format from query generator");
   } catch (error) {

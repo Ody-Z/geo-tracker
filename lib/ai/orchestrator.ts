@@ -14,6 +14,18 @@ import { queryGemini } from "./gemini";
 import { parseResponse } from "./parser";
 import { truncate } from "@/lib/utils";
 
+const GEMINI_DELAY_MS = 8000;
+let lastGeminiPromise: Promise<string> = Promise.resolve("");
+
+async function runGeminiWithThrottle(prompt: string): Promise<{ text: string }> {
+  lastGeminiPromise = lastGeminiPromise
+    .catch(() => "")
+    .then(() => new Promise<void>((r) => setTimeout(r, GEMINI_DELAY_MS)))
+    .then(() => queryGemini(prompt));
+  const text = await lastGeminiPromise;
+  return { text };
+}
+
 const MODEL_QUERY_FNS: Record<
   ModelKey,
   (prompt: string) => Promise<{ text: string; citations?: string[] }>
@@ -24,7 +36,7 @@ const MODEL_QUERY_FNS: Record<
     const r = await queryPerplexity(p);
     return { text: r.text, citations: r.citations };
   },
-  gemini: async (p) => ({ text: await queryGemini(p) }),
+  gemini: (p) => runGeminiWithThrottle(p),
 };
 
 async function runSingleQuery(
