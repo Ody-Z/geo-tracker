@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, type Tool } from "@google/generative-ai";
 import { AI_MODELS } from "./models";
 
 const genAI = new GoogleGenerativeAI(
@@ -8,7 +8,8 @@ const genAI = new GoogleGenerativeAI(
 export async function queryGemini(prompt: string): Promise<string> {
   const model = genAI.getGenerativeModel({
     model: AI_MODELS.gemini.id,
-    tools: [{ googleSearchRetrieval: {} }],
+    // SDK types lag behind API — googleSearch replaces deprecated googleSearchRetrieval
+    tools: [{ googleSearch: {} } as Tool],
   });
   const result = await model.generateContent(prompt);
   return result.response.text();

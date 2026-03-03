@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export function Navbar() {
   return (
@@ -22,6 +23,12 @@ export function Navbar() {
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             FAQ
+          </a>
+          <a
+            href="/#waitlist"
+            className={buttonVariants({ size: "sm" })}
+          >
+            Join Waitlist
           </a>
         </nav>
       </div>

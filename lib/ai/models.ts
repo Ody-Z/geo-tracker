@@ -18,7 +18,7 @@ export const AI_MODELS = {
     color: "#6366F1",
   },
   gemini: {
-    id: "gemini-2.5-flash",
+    id: "gemini-3-flash-preview",
     name: "Gemini",
     weight: 1.0,
     color: "#3B82F6",

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Loader2, CheckCircle2 } from "lucide-react";
 
@@ -15,29 +14,30 @@ export function UpgradeCTA({ brandName, scanId }: UpgradeCTAProps) {
   const [status, setStatus] = useState<"idle" | "submitting" | "submitted">(
     "idle"
   );
-  const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
+  async function handleClick() {
     setStatus("submitting");
 
     try {
+      const body = new FormData();
+      body.append("_subject", "AIknowsMe Waitlist Signup");
+      body.append("brand_name", brandName);
+      body.append("scan_id", scanId);
+      body.append("form_type", "waitlist");
+
       const res = await fetch("https://formspree.io/f/mlgwvyer", {
         method: "POST",
         headers: { Accept: "application/json" },
-        body: new FormData(e.currentTarget),
+        body,
       });
 
       if (!res.ok) {
-        setError("Something went wrong. Please try again.");
         setStatus("idle");
         return;
       }
 
       setStatus("submitted");
     } catch {
-      setError("Something went wrong. Please try again.");
       setStatus("idle");
     }
   }
@@ -73,31 +73,11 @@ export function UpgradeCTA({ brandName, scanId }: UpgradeCTAProps) {
               scans, trend charts, and email alerts.
             </p>
           </div>
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end"
-        >
-          <input type="hidden" name="_subject" value="AIknowsMe Waitlist Signup" />
-          <input type="hidden" name="brand_name" value={brandName} />
-          <input type="hidden" name="scan_id" value={scanId} />
-          <input type="hidden" name="form_type" value="waitlist" />
-
-          <div className="flex-1">
-            <label htmlFor="waitlist-email" className="sr-only">
-              Email
-            </label>
-            <Input
-              id="waitlist-email"
-              name="email"
-              type="email"
-              placeholder="you@example.com"
-              required
-              autoComplete="email"
-            />
-          </div>
-          <Button type="submit" className="shrink-0" disabled={status === "submitting"}>
+          <Button
+            className="shrink-0"
+            disabled={status === "submitting"}
+            onClick={handleClick}
+          >
             {status === "submitting" ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -107,11 +87,7 @@ export function UpgradeCTA({ brandName, scanId }: UpgradeCTAProps) {
               "Join Waitlist"
             )}
           </Button>
-        </form>
-
-        {error && (
-          <p className="mt-3 text-sm text-destructive">{error}</p>
-        )}
+        </div>
       </CardContent>
     </Card>
   );

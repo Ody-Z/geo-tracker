@@ -27,7 +27,6 @@ Rules:
           content: `Person: ${name}\nBackground: ${background}`,
         },
       ],
-      temperature: 0.7,
       max_completion_tokens: 512,
       response_format: { type: "json_object" },
     });

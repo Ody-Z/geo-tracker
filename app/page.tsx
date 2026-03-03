@@ -1,6 +1,6 @@
 import { ChatMockup } from "@/components/landing/ChatMockup";
 import { HeroScanForm } from "@/components/landing/HeroScanForm";
-import { ScrollToTopButton } from "@/components/landing/ScrollToTopButton";
+import { WaitlistForm } from "@/components/landing/WaitlistForm";
 import { FAQ } from "@/components/landing/FAQ";
 
 export default function HomePage() {
@@ -28,6 +28,14 @@ export default function HomePage() {
             </p>
 
             <HeroScanForm />
+          </div>
+
+          {/* Scroll down indicator */}
+          <div className="mt-12 flex flex-col items-center gap-1 text-muted-foreground/50 animate-bounce">
+            <span className="text-xs tracking-wide">Scroll down</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="stroke-current">
+              <path d="M4 6l4 4 4-4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         </div>
       </section>
@@ -300,15 +308,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Final CTA ── */}
-      <section className="bg-foreground text-background">
+      {/* ── Final CTA / Waitlist ── */}
+      <section id="waitlist" className="bg-foreground text-background">
         <div className="mx-auto max-w-[600px] px-4 py-20 sm:py-24 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">
             See where AI answers cite you &mdash; and exactly what to do next.
           </h2>
-          <ScrollToTopButton />
+          <WaitlistForm />
           <p className="mt-3.5 text-sm text-background/50">
-            No credit card required &middot; Results in under 30 seconds
+            Be the first to get weekly AI visibility tracking.
           </p>
         </div>
       </section>
