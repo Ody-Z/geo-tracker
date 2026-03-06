@@ -25,4 +25,4 @@ export const freeScanLimiter = redis
       analytics: true,
       prefix: "ratelimit:free-scan",
     })
-  : (noopLimiter as Ratelimit);
+  : (noopLimiter as unknown as Ratelimit);
